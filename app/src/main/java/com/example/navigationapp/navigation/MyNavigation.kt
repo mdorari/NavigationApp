@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.navigationapp.screens.ProfileScreen
 import com.example.navigationapp.screens.details.DetailsScreen
 import com.example.navigationapp.screens.home.HomeScreen
 
@@ -19,10 +20,19 @@ fun MyNavigation() {
         composable(
             Screens.DetailsScreen.name + "/{data}",
             arguments = listOf(navArgument(name = "data") { type = NavType.StringType })
-        ) {
-            backStackEntry ->
-            DetailsScreen(navController = navController,
+        ) { backStackEntry ->
+            DetailsScreen(
+                navController = navController,
                 backStackEntry.arguments?.getString("data")
+            )
+        }
+        composable(
+            Screens.ProfileScreen.name + "/{data}",
+            arguments = listOf(navArgument(name = "data") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            ProfileScreen(
+                navController = navController,
+                userName = navBackStackEntry.arguments?.getString("data")
             )
         }
     }
