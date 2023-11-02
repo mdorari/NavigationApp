@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.navigationapp.model.Movie
 
 @Composable
 fun DetailsScreen(navController: NavController, detailsData: String?) {
@@ -20,8 +21,6 @@ fun DetailsScreen(navController: NavController, detailsData: String?) {
     ) {
         if (detailsData != null) {
             Text(text = detailsData)
-        }else{
-            Text(text = "N/A")
         }
         Spacer(modifier = Modifier.height(200.dp))
         Button(onClick = { navController.popBackStack() }) {

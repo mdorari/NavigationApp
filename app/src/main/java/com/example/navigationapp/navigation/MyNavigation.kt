@@ -23,7 +23,7 @@ fun MyNavigation() {
         ) { backStackEntry ->
             DetailsScreen(
                 navController = navController,
-                backStackEntry.arguments?.getString("data")
+                detailsData = backStackEntry.arguments?.getString("data")
             )
         }
         composable(
