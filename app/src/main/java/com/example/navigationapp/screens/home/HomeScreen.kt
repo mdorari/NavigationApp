@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.navigationapp.model.getMovies
 import com.example.navigationapp.navigation.Screens
+import com.example.navigationapp.widget.ExpandableCard
 import com.example.navigationapp.widget.MovieRow
 
 
@@ -70,7 +71,7 @@ fun MainContent(navController: NavController) {
 //            .padding(top = 4.dp, start = 4.dp, end = 4.dp)
         ) {
             items(items = getMovies()) {
-                MovieRow(movieData = it){movieData->
+                ExpandableCard(movieData = it){movieData->
                     navController.navigate(route = Screens.DetailsScreen.name + "/$movieData")
                 }
             }
