@@ -26,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -37,13 +36,9 @@ import coil.transform.CircleCropTransformation
 import com.example.navigationapp.model.Movie
 
 @Composable
-fun MovieRow(movieData: Movie, onItemClick: (String) -> Unit = {}) {
-    var expanded by remember {
-        mutableStateOf(false)
-    }
-    Card(modifier = Modifier
-        .padding(4.dp)
-        .clickable { onItemClick(movieData.id) }) {
+fun MovieDetailWidget(movieData: Movie, onItemClick: (String) -> Unit = {}) {
+    Surface(modifier = Modifier
+        .padding(4.dp)) {
         Row {
             Surface(
                 modifier = Modifier
@@ -57,27 +52,15 @@ fun MovieRow(movieData: Movie, onItemClick: (String) -> Unit = {}) {
                     contentDescription = "Movie Poster"
                 )
             }
-//            Icon(imageVector = Icons.Default.Face, contentDescription = "Movie picture")
             Column {
                 Text(text = movieData.title)
                 Text(text = movieData.rating)
+                Text(text = movieData.year)
+                Text(text = movieData.genre)
+                Text(text = movieData.director)
+                Text(text = movieData.actors)
                 Text(text = movieData.plot)
-
-                AnimatedVisibility(visible = expanded) {
-                    Column {
-                        Text(text = "Hello there")
-                    }
-                }
             }
-            Icon(
-                imageVector = Icons.Filled.KeyboardArrowDown, contentDescription = "Down Arrow",
-                modifier = Modifier
-                    .size(25.dp)
-                    .clickable {
-                        expanded = !expanded
-                    },
-                tint = Color.DarkGray
-            )
         }
     }
 }
@@ -92,10 +75,10 @@ fun ExpandableCard(movieData: Movie, onItemClick: (String) -> Unit = {}) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable { isExpanded = !isExpanded
+            .background(Color.White)
+            .clickable {
                 onItemClick(movieData.id)
-            }
-            .background(Color.White),
+            },
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(4.dp)
 //        backgroundColor = Color.White
@@ -106,7 +89,14 @@ fun ExpandableCard(movieData: Movie, onItemClick: (String) -> Unit = {}) {
             Row {
                 // Left-hand side image
                 Image(
-                    painter = rememberAsyncImagePainter(movieData.images[0]),
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(movieData.images[0])
+                            .scale(coil.size.Scale.FILL)
+                            .size(coil.size.Size(300,300))
+                            .transformations(CircleCropTransformation())
+                            .build()
+                        ),
                     contentScale = ContentScale.Crop,
                     contentDescription = "Movie Poster"
                 )
@@ -149,6 +139,7 @@ fun ExpandableCard(movieData: Movie, onItemClick: (String) -> Unit = {}) {
                             .fillMaxWidth()
 //                            .align(Alignment.CenterVertically)
                             .padding(16.dp)
+                            .clickable { isExpanded = !isExpanded }
                     )
 
                     if (isExpanded) {
